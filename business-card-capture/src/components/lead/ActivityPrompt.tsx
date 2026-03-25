@@ -29,35 +29,35 @@ const options: ActivityOption[] = [
     label: 'Log a Call',
     description: 'Record a phone conversation',
     icon: <Phone size={22} />,
-    color: 'from-brand-600 to-brand-800',
+    color: 'from-brand-500 to-brand-700',
   },
   {
     type: 'doorknock',
     label: 'Door Knock',
     description: 'Log an in-person visit',
     icon: <DoorOpen size={22} />,
-    color: 'from-violet-600 to-violet-800',
+    color: 'from-brand-700 to-brand-900',
   },
   {
     type: 'email',
     label: 'Send Email',
     description: 'Follow up via email',
     icon: <Mail size={22} />,
-    color: 'from-sky-600 to-sky-800',
+    color: 'from-surface-600 to-surface-800',
   },
   {
     type: 'meeting',
     label: 'Meeting Note',
     description: 'Record meeting details',
     icon: <CalendarDays size={22} />,
-    color: 'from-emerald-600 to-emerald-800',
+    color: 'from-surface-500 to-surface-700',
   },
   {
     type: 'note',
     label: 'Add Note',
     description: 'Add a general note',
     icon: <FileText size={22} />,
-    color: 'from-amber-600 to-amber-800',
+    color: 'from-surface-700 to-surface-900',
   },
 ]
 
@@ -131,9 +131,9 @@ export function ActivityPrompt({ lead, onLog, onSkip, isLogging }: ActivityPromp
             </label>
             <textarea
               className={cn(
-                'w-full rounded-xl bg-surface-800 border border-surface-700 px-3 py-2.5 text-sm text-white placeholder:text-surface-500',
-                'focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/40',
-                'hover:border-surface-600 transition-all duration-150 resize-none'
+                'w-full rounded-xl bg-surface-900 border border-surface-700 px-3 py-2.5 text-sm text-white placeholder:text-surface-500',
+                'focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30',
+                'hover:border-surface-500 transition-all duration-150 resize-none'
               )}
               rows={3}
               placeholder="Add details about this interaction…"

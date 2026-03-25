@@ -26,23 +26,23 @@ export function Profile() {
         </div>
 
         <SettingRow
-          icon={<Cpu size={16} className="text-brand-400" />}
+          icon={<Cpu size={16} className="text-brand-500" />}
           label="Runtime"
           value={ENV}
           badge={ENV.includes('Mock') ? 'dev' : 'prod'}
         />
         <SettingRow
-          icon={<Database size={16} className="text-emerald-400" />}
+          icon={<Database size={16} className="text-brand-400" />}
           label="Dataverse"
           value={ENV.includes('Mock') ? 'In-memory store' : 'Connected'}
         />
         <SettingRow
-          icon={<Cpu size={16} className="text-violet-400" />}
+          icon={<Cpu size={16} className="text-surface-400" />}
           label="AI Builder"
           value={ENV.includes('Mock') ? 'Mock responses' : 'Live connector'}
         />
         <SettingRow
-          icon={<Shield size={16} className="text-sky-400" />}
+          icon={<Shield size={16} className="text-surface-300" />}
           label="Auth"
           value="Power Platform SSO"
         />

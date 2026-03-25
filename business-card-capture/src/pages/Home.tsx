@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Camera, Monitor, Clock, ArrowRight, Zap } from 'lucide-react'
+import { Camera, Monitor, Clock, ArrowRight, ScanLine } from 'lucide-react'
 import { useAppStore } from '@/store/useAppStore'
 import { Button } from '@/components/ui'
 import { cn } from '@/components/ui/utils'
@@ -13,12 +13,16 @@ export function Home() {
     <div className="flex flex-col min-h-full px-5 pt-12 pb-6 gap-8 animate-fade-up">
       {/* Hero */}
       <div>
-        <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center mb-4 shadow-glow">
-          <Zap size={22} className="text-white" />
+        {/* T-Mobile magenta icon mark */}
+        <div className="h-14 w-14 rounded-2xl bg-brand-500 flex items-center justify-center mb-5 shadow-glow">
+          <ScanLine size={26} className="text-white" strokeWidth={2} />
         </div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">Business Card<br />Capture</h1>
-        <p className="text-surface-400 mt-2 text-sm leading-relaxed">
-          Scan a card or screenshot a listing to instantly create a lead in Dataverse.
+        <h1 className="text-4xl font-extrabold text-white tracking-tight leading-none">
+          Business Card<br />
+          <span className="text-brand-500">Capture</span>
+        </h1>
+        <p className="text-surface-400 mt-3 text-sm leading-relaxed">
+          Scan a card or screenshot a listing — instantly create a lead in Dataverse.
         </p>
       </div>
 
@@ -28,9 +32,9 @@ export function Home() {
           icon={<Camera size={24} />}
           title="Scan Business Card"
           description="Point your camera at a card — AI extracts the contact details"
-          gradient="from-brand-600/20 to-brand-900/10"
-          border="border-brand-600/30"
-          iconBg="bg-brand-600"
+          gradient="from-brand-500/20 to-brand-950/30"
+          border="border-brand-500/40"
+          iconBg="bg-brand-500"
           delay={0}
           onClick={() => navigate('/scan/camera')}
         />
@@ -38,9 +42,9 @@ export function Home() {
           icon={<Monitor size={24} />}
           title="Smart Screen Scan"
           description="Screenshot business info from Google, Yelp, or any webpage"
-          gradient="from-violet-600/20 to-violet-900/10"
-          border="border-violet-600/30"
-          iconBg="bg-violet-600"
+          gradient="from-surface-800 to-surface-900"
+          border="border-surface-700"
+          iconBg="bg-surface-600"
           delay={0.06}
           onClick={() => navigate('/scan/desktop')}
         />
@@ -97,9 +101,9 @@ export function Home() {
           }).length },
           { label: 'Converted', value: recentLeads.filter(l => l.status === 'converted').length },
         ].map(({ label, value }) => (
-          <div key={label} className="rounded-xl bg-surface-900 border border-surface-800 p-3 text-center">
-            <p className="text-2xl font-bold text-white">{value}</p>
-            <p className="text-xs text-surface-500 mt-0.5">{label}</p>
+          <div key={label} className="rounded-2xl bg-surface-900 border border-surface-800 p-3 text-center">
+            <p className="text-3xl font-extrabold text-brand-500">{value}</p>
+            <p className="text-[11px] font-medium text-surface-400 mt-0.5 uppercase tracking-wide">{label}</p>
           </div>
         ))}
       </div>
@@ -135,12 +139,12 @@ function PrimaryAction({
       )}
     >
       <div className="flex items-start gap-4">
-        <div className={cn('h-12 w-12 rounded-xl flex items-center justify-center text-white flex-shrink-0', iconBg)}>
+        <div className={cn('h-12 w-12 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-sm', iconBg)}>
           {icon}
         </div>
         <div className="flex-1">
-          <p className="font-semibold text-white">{title}</p>
-          <p className="text-sm text-surface-400 mt-1 leading-snug">{description}</p>
+          <p className="font-bold text-white text-base">{title}</p>
+          <p className="text-sm text-surface-400 mt-0.5 leading-snug">{description}</p>
         </div>
         <ArrowRight size={18} className="text-surface-500 mt-1 flex-shrink-0" />
       </div>

@@ -29,11 +29,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              'w-full rounded-xl bg-surface-800 border border-surface-700 px-3 py-2.5 text-sm text-white placeholder:text-surface-500',
+              'w-full rounded-xl bg-surface-900 border border-surface-700 px-3 py-2.5 text-sm text-white placeholder:text-surface-500',
               'transition-all duration-150',
-              'focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/40',
+              'focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30',
               'disabled:opacity-40 disabled:cursor-not-allowed',
-              'hover:border-surface-600',
+              'hover:border-surface-500',
               icon && 'pl-9',
               error && 'border-red-500 focus:border-red-500 focus:ring-red-500/30',
               className

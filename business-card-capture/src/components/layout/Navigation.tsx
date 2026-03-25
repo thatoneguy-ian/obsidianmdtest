@@ -12,7 +12,7 @@ const navItems = [
 
 export function Navigation() {
   return (
-    <nav className="border-t border-surface-800 bg-surface-950/90 backdrop-blur-xl safe-bottom">
+    <nav className="border-t border-surface-800 bg-black/95 backdrop-blur-xl safe-bottom">
       <div className="flex items-center justify-around px-2 py-2">
         {navItems.map(({ to, icon: Icon, label }) => (
           <NavLink
@@ -21,7 +21,7 @@ export function Navigation() {
             className={({ isActive }) =>
               cn(
                 'relative flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all duration-200',
-                isActive ? 'text-brand-400' : 'text-surface-500 hover:text-surface-300'
+                isActive ? 'text-brand-500' : 'text-surface-500 hover:text-surface-300'
               )
             }
           >
@@ -30,12 +30,12 @@ export function Navigation() {
                 {isActive && (
                   <motion.div
                     layoutId="nav-pill"
-                    className="absolute inset-0 bg-brand-600/15 rounded-xl border border-brand-600/20"
+                    className="absolute inset-0 bg-brand-500/10 rounded-xl border border-brand-500/25"
                     transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                   />
                 )}
-                <Icon size={20} strokeWidth={isActive ? 2.2 : 1.8} />
-                <span className="text-[10px] font-medium">{label}</span>
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 1.8} />
+                <span className="text-[10px] font-semibold tracking-wide uppercase">{label}</span>
               </>
             )}
           </NavLink>

@@ -181,7 +181,7 @@ export function ScreenCapture({ onCapture, isProcessing = false }: ScreenCapture
             {/* Selection rectangle */}
             {selRect && (
               <div
-                className="fixed border-2 border-brand-400 bg-brand-500/10 pointer-events-none"
+                className="fixed border-2 border-brand-500 bg-brand-500/10 pointer-events-none"
                 style={{
                   left: selRect.left,
                   top: selRect.top,
@@ -194,7 +194,7 @@ export function ScreenCapture({ onCapture, isProcessing = false }: ScreenCapture
                   <div
                     key={c}
                     className={cn(
-                      'absolute h-3 w-3 bg-brand-400 rounded-sm',
+                      'absolute h-3 w-3 bg-brand-500 rounded-sm',
                       c === 'tl' && '-top-1.5 -left-1.5',
                       c === 'tr' && '-top-1.5 -right-1.5',
                       c === 'bl' && '-bottom-1.5 -left-1.5',

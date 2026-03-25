@@ -44,8 +44,8 @@
     @apply bg-white/5 backdrop-blur-xl border border-white/10;
   }
 
-  /* Text gradient */
+  /* T-Mobile magenta gradient text */
   .text-gradient {
-    @apply bg-gradient-to-r from-brand-400 to-violet-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent;
   }
 }

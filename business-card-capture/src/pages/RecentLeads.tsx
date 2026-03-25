@@ -84,7 +84,7 @@ function LeadRow({ lead, index }: { lead: Lead; index: number }) {
     >
       <div className="flex items-start gap-3">
         {/* Avatar */}
-        <div className="h-10 w-10 rounded-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white font-semibold text-sm flex-shrink-0">
+        <div className="h-10 w-10 rounded-full bg-brand-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
           {initials.toUpperCase()}
         </div>
 

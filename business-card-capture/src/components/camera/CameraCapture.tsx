@@ -112,9 +112,9 @@ export function CameraCapture({ onCapture, isProcessing = false }: CameraCapture
       {/* Flash hint */}
       {isStreaming && !isProcessing && (
         <div className="absolute bottom-32 left-0 right-0 flex justify-center pointer-events-none">
-          <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-3 py-1.5 rounded-full">
-            <Zap size={12} className="text-amber-400" />
-            <span className="text-xs text-white/70">Align card within frame</span>
+          <div className="flex items-center gap-1.5 bg-black/60 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/10">
+            <Zap size={12} className="text-brand-500" />
+            <span className="text-xs text-white/80 font-medium">Align card within frame</span>
           </div>
         </div>
       )}
@@ -166,9 +166,9 @@ function ShutterButton({ onPress, disabled }: { onPress: () => void; disabled: b
       style={{ height: 72, width: 72 }}
       aria-label="Capture business card"
     >
-      {/* Outer ring */}
-      <div className="absolute inset-0 rounded-full border-4 border-white/80" />
-      {/* Inner fill */}
+      {/* T-Mobile magenta outer ring */}
+      <div className="absolute inset-0 rounded-full border-4 border-brand-500" />
+      {/* Inner — white fill */}
       <div className="h-14 w-14 rounded-full bg-white shadow-lg" />
     </motion.button>
   )

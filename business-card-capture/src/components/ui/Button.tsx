@@ -4,8 +4,8 @@ import { cn } from './utils'
 
 const buttonVariants = cva(
   [
-    'inline-flex items-center justify-center gap-2 font-medium transition-all duration-150',
-    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-950',
+    'inline-flex items-center justify-center gap-2 font-bold tracking-wide transition-all duration-150',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black',
     'disabled:pointer-events-none disabled:opacity-40',
     'select-none touch-manipulation',
   ],
@@ -13,16 +13,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: [
-          'bg-brand-600 text-white shadow-sm',
-          'hover:bg-brand-500 active:bg-brand-700',
+          // T-Mobile CTA — solid magenta, white text
+          'bg-brand-500 text-white',
+          'hover:bg-brand-400 active:bg-brand-600',
         ],
         secondary: [
-          'bg-surface-800 text-surface-100 shadow-sm',
+          'bg-surface-800 text-white shadow-sm',
           'hover:bg-surface-700 active:bg-surface-900',
           'border border-surface-700',
         ],
         ghost: [
-          'bg-transparent text-surface-300',
+          'bg-transparent text-surface-400',
           'hover:bg-surface-800 hover:text-white active:bg-surface-900',
         ],
         danger: [
@@ -35,10 +36,10 @@ const buttonVariants = cva(
         ],
       },
       size: {
-        sm:   'h-8  px-3 text-xs rounded-lg',
-        md:   'h-10 px-4 text-sm rounded-xl',
-        lg:   'h-12 px-6 text-base rounded-xl',
-        xl:   'h-14 px-8 text-lg rounded-2xl',
+        sm:   'h-8  px-4 text-xs rounded-full',
+        md:   'h-10 px-5 text-sm rounded-full',
+        lg:   'h-12 px-7 text-base rounded-full',
+        xl:   'h-14 px-8 text-lg rounded-full',
         icon: 'h-10 w-10 rounded-xl',
         'icon-sm': 'h-8 w-8 rounded-lg',
         'icon-lg': 'h-12 w-12 rounded-xl',

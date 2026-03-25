@@ -243,9 +243,9 @@ export function LeadForm({ extractedData, initialValues, onSave, onBack, isSavin
           <SectionLabel icon={<Mail size={13} />} label="Notes" />
           <textarea
             className={cn(
-              'mt-2 w-full rounded-xl bg-surface-800 border border-surface-700 px-3 py-2.5 text-sm text-white placeholder:text-surface-500',
-              'focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/40',
-              'hover:border-surface-600 transition-all duration-150 resize-none'
+              'mt-2 w-full rounded-xl bg-surface-900 border border-surface-700 px-3 py-2.5 text-sm text-white placeholder:text-surface-500',
+              'focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30',
+              'hover:border-surface-500 transition-all duration-150 resize-none'
             )}
             rows={3}
             placeholder="Add meeting notes…"
