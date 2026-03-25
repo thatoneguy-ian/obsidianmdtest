@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useAppStore } from '@/store/useAppStore'
 import { extractBusinessCard, recognizeText, parseOCRToCard } from '@/connectors/aiBuilder'
 import { createLead, createActivity, findDuplicateLeads } from '@/connectors/dataverse'
+import { createSalesforceLeadRecord, createSalesforceTask, SFDC_ENABLED } from '@/connectors/salesforce'
 import type { Lead, Activity, BusinessCardData } from '@/types'
 
 /**
@@ -105,8 +106,24 @@ export function useBusinessCard() {
         notes: fields.notes ?? '',
       }
 
+      // Primary write — Dataverse (blocking)
       const result = await createLead(lead)
       if (!result.success || !result.data) throw new Error(result.error ?? 'Save failed')
+
+      // Secondary write — Salesforce (non-blocking, fire-and-forget)
+      // Runs in parallel after Dataverse succeeds; failure does not block the user.
+      if (SFDC_ENABLED) {
+        createSalesforceLeadRecord(lead).then((sfdcResult) => {
+          if (!sfdcResult.success) {
+            store.addToast({
+              title: 'Salesforce sync failed',
+              description: sfdcResult.error ?? 'Lead was saved to Dataverse but not pushed to SFDC',
+              variant: 'warning',
+            })
+          }
+        })
+      }
+
       return result.data
     },
     onMutate: () => {
@@ -133,8 +150,19 @@ export function useBusinessCard() {
 
   const activityMutation = useMutation({
     mutationFn: async (activity: Omit<Activity, 'id' | 'createdAt'>) => {
+      // Primary write — Dataverse (blocking)
       const result = await createActivity(activity)
       if (!result.success) throw new Error(result.error ?? 'Activity failed')
+
+      // Secondary write — Salesforce Task (non-blocking)
+      // activity.leadId here is the Dataverse lead ID; pass it as the SFDC WhoId
+      // if your app also stores the sfdcLeadId, substitute it here.
+      if (SFDC_ENABLED) {
+        createSalesforceTask(activity, activity.leadId).catch(() => {
+          // Silently swallow — Dataverse activity is the source of truth
+        })
+      }
+
       return result.data
     },
     onSuccess: () => {

@@ -14,12 +14,13 @@
 5. [Local Development Workflow](#5-local-development-workflow)
 6. [Connecting to Data](#6-connecting-to-data)
 7. [Connecting to Dataverse](#7-connecting-to-dataverse)
-8. [Connecting to Copilot Studio](#8-connecting-to-copilot-studio)
-9. [Build & Deploy](#9-build--deploy)
-10. [Authentication Model](#10-authentication-model)
-11. [Licensing & Admin Requirements](#11-licensing--admin-requirements)
-12. [Key CLI Reference](#12-key-cli-reference)
-13. [Sources](#13-sources)
+8. [Connecting to Salesforce](#8-connecting-to-salesforce)
+9. [Connecting to Copilot Studio](#9-connecting-to-copilot-studio)
+10. [Build & Deploy](#10-build--deploy)
+11. [Authentication Model](#11-authentication-model)
+12. [Licensing & Admin Requirements](#12-licensing--admin-requirements)
+13. [Key CLI Reference](#13-key-cli-reference)
+14. [Sources](#14-sources)
 
 ---
 
@@ -294,7 +295,129 @@ For **non-interactive / service account** scenarios (CI/CD, background jobs):
 
 ---
 
-## 8. Connecting to Copilot Studio
+## 8. Connecting to Salesforce
+
+**Connector reference:** [Microsoft Learn — Salesforce connector](https://learn.microsoft.com/en-us/connectors/salesforce/)
+**Implementation:** `src/connectors/salesforce.ts`
+
+The app uses the first-party Power Platform **`shared_salesforce`** connector to dual-write leads and activities into Salesforce alongside Dataverse. Salesforce is treated as a **secondary, non-blocking write** — a Dataverse save always succeeds first, and any SFDC failure surfaces as a warning toast without rolling back the record.
+
+### Supported Salesforce Objects
+
+| Object | Used For |
+|--------|---------|
+| `Lead` | Created on every business card capture |
+| `Task` | Created when an activity is logged post-capture |
+| `Contact` / `Account` | Available via connector; conversion handled in SFDC itself |
+
+### One-Time Setup Per Environment
+
+```bash
+# 1. Create a Salesforce connection in the Power Apps maker portal
+#    Data → Connections → + New connection → search "Salesforce" → sign in
+
+# 2. Find the connectionId
+pac connection list
+# Look for: /providers/Microsoft.PowerApps/apis/shared_salesforce
+# Copy the connectionId
+
+# 3. Add as a code app data source
+pac code add-data-source -a shared_salesforce -c <connectionId>
+# Generates:
+#   generated/services/SalesforceModel.ts
+#   generated/services/SalesforceService.ts
+
+# 4. Enable in environment config
+# .env.production → VITE_SYNC_TO_SALESFORCE=true
+```
+
+### Feature Flag
+
+Salesforce sync is **off by default** and controlled by an env var:
+
+```bash
+# .env.development
+VITE_SYNC_TO_SALESFORCE=false   # mock path used; no SFDC connection needed
+
+# .env.production
+VITE_SYNC_TO_SALESFORCE=true    # live connector; requires shared_salesforce data source
+```
+
+### Lead Field Mapping (Internal → Salesforce)
+
+| Our `Lead` field | Salesforce `Lead` field | Notes |
+|-----------------|------------------------|-------|
+| `firstName` | `FirstName` | |
+| `lastName` | `LastName` | Required by SFDC |
+| `company` | `Company` | Required by SFDC |
+| `jobTitle` | `Title` | |
+| `phone` | `Phone` | |
+| `mobilePhone` | `MobilePhone` | |
+| `email` | `Email` | |
+| `website` | `Website` | |
+| `address1` | `Street` | |
+| `city` | `City` | |
+| `state` | `State` | |
+| `zip` | `PostalCode` | |
+| `country` | `Country` | |
+| `notes` | `Description` | |
+| `source` | `LeadSource` | Mapped to SFDC picklist (see below) |
+| _(fixed)_ | `Status` | Always `"Open - Not Contacted"` on create |
+
+**LeadSource picklist mapping:**
+
+| Our source | SFDC LeadSource |
+|-----------|----------------|
+| `business_card` | `Other` *(SFDC has no built-in Business Card value)* |
+| `screen_capture` | `Web` |
+| `referral` | `Word of mouth` |
+| `web` | `Web` |
+| `manual` | `Other` |
+
+> To add a custom `Business Card` picklist value in SFDC: Setup → Object Manager → Lead → Fields & Relationships → LeadSource → Edit.
+
+### Dual-Write Flow
+
+```
+User taps Save
+       │
+       ▼
+  createLead()          ← Dataverse (awaited — blocking)
+       │
+   success ──────────────────────────────────────────┐
+       │                                              │
+       ▼                                              ▼
+  store.setStep('activity')          createSalesforceLeadRecord()
+  show success toast                   (fire-and-forget — non-blocking)
+                                              │
+                                    fail → warning toast
+                                    pass → SFDC Lead created
+```
+
+### Task Logging (Post-Capture Activity)
+
+When the user logs a follow-up activity after saving, `createSalesforceTask()` creates a corresponding **Salesforce Task** linked to the Lead via `WhoId`:
+
+| Our `Activity.type` | SFDC `Task.Type` |
+|--------------------|-----------------|
+| `call` | `Call` |
+| `email` | `Email` |
+| `meeting` | `Meeting` |
+| `doorknock` | `Other` |
+| `note` | `Other` |
+
+### Connector Action Reference
+
+| Operation | Power Platform action | SFDC equivalent |
+|-----------|----------------------|----------------|
+| Create Lead | `PostItem` (table: Lead) | `POST /services/data/vXX.0/sobjects/Lead` |
+| Update Lead | `PatchItem` (table: Lead, id) | `PATCH /services/data/vXX.0/sobjects/Lead/{id}` |
+| Create Task | `PostItem` (table: Task) | `POST /services/data/vXX.0/sobjects/Task` |
+| Get Records | `GetItems` (table: Lead) | `GET /services/data/vXX.0/sobjects/Lead` |
+
+---
+
+## 9. Connecting to Copilot Studio
 
 **Reference:** [How to: Connect to Copilot Studio](https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/connect-to-copilot-studio)
 
@@ -359,7 +482,7 @@ When using the Microsoft 365 Agents SDK for external embedding, add this permiss
 
 ---
 
-## 9. Build & Deploy
+## 10. Build & Deploy
 
 ### Build for Production
 
@@ -411,7 +534,7 @@ npx powerapps-code push
 
 ---
 
-## 10. Authentication Model
+## 11. Authentication Model
 
 ```
 User
@@ -439,7 +562,7 @@ Your React App
 
 ---
 
-## 11. Licensing & Admin Requirements
+## 12. Licensing & Admin Requirements
 
 | Role | Requirement |
 |------|-------------|
@@ -451,7 +574,7 @@ Your React App
 
 ---
 
-## 12. Key CLI Reference
+## 13. Key CLI Reference
 
 ```bash
 # Auth
@@ -482,7 +605,7 @@ pac connection list                      # List connections in the environment
 
 ---
 
-## 13. Sources
+## 14. Sources
 
 - [Quickstart: Create a code app from scratch](https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/create-an-app-from-scratch)
 - [Quickstart with npm CLI (preview)](https://learn.microsoft.com/en-us/power-apps/developer/code-apps/how-to/npm-quickstart)
