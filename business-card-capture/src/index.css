@@ -9,6 +9,7 @@
 
   * {
     -webkit-tap-highlight-color: transparent;
+    font-style: normal; /* T-Mobile brand: no italics ever */
   }
 
   html {
@@ -20,6 +21,11 @@
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* T-Mobile brand: headline leading = font-size × 85% */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 0.85;
   }
 
   /* iOS safe area utilities */

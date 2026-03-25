@@ -23,13 +23,19 @@ const config: Config = {
           900: '#50002d',
           950: '#1e0010',
         },
+        // T-Mobile accent colors
+        accent: {
+          berry:      '#861b54', // Berry — use sparingly
+          'dark-gray': '#6a6a6a', // Dark Gray
+          'light-gray': '#e8e8e8', // Light Gray
+        },
         surface: {
           0:   '#ffffff',
           50:  '#f7f7f7',
-          100: '#ebebeb',
+          100: '#e8e8e8', // T-Mobile Light Gray
           200: '#d4d4d4',
           300: '#a3a3a3',
-          400: '#737373',
+          400: '#6a6a6a', // T-Mobile Dark Gray
           500: '#525252',
           600: '#3d3d3d',
           700: '#2d2d2d',
