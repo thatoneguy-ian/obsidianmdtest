@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+    font-style: normal; /* T-Mobile brand: no italics ever */
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface-950 text-white;
+    overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* T-Mobile brand: headline leading = font-size × 85% */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 0.85;
+  }
+
+  /* iOS safe area utilities */
+  .safe-top    { padding-top: env(safe-area-inset-top, 0px); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 16px); }
+  .safe-left   { padding-left: env(safe-area-inset-left, 0px); }
+  .safe-right  { padding-right: env(safe-area-inset-right, 0px); }
+}
+
+@layer components {
+  /* Scrollbar styling */
+  .overflow-y-auto::-webkit-scrollbar { width: 4px; }
+  .overflow-y-auto::-webkit-scrollbar-track { background: transparent; }
+  .overflow-y-auto::-webkit-scrollbar-thumb {
+    @apply bg-surface-700 rounded-full;
+  }
+}
+
+@layer utilities {
+  /* Glass morphism */
+  .glass {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10;
+  }
+
+  /* T-Mobile magenta gradient text */
+  .text-gradient {
+    @apply bg-gradient-to-r from-brand-400 to-brand-600 bg-clip-text text-transparent;
+  }
+}
